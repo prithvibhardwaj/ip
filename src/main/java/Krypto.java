@@ -1,4 +1,5 @@
 import java.util.Scanner;
+import java.util.ArrayList;
 
 public class Krypto {
     public static void main(String[] args) {
@@ -18,8 +19,7 @@ public class Krypto {
         System.out.println("____________________________________________________________");
 
         Scanner scanner = new Scanner(System.in);
-        Task[] tasks = new Task[100];
-        int count = 0;
+        ArrayList<Task> tasks = new ArrayList<>();
 
         String command = scanner.nextLine();
 
@@ -28,55 +28,60 @@ public class Krypto {
             try {
                 if (command.equals("list")) {
                     System.out.println(" Here are the tasks in your list:");
-                    for (int i = 0; i < count; i++) {
-                        System.out.println(" " + (i + 1) + "." + tasks[i]);
+                    for (int i = 0; i < tasks.size(); i++) {
+                        System.out.println(" " + (i + 1) + "." + tasks.get(i));
                     }
                 } else if (command.startsWith("mark")) {
                     int index = Integer.parseInt(command.split(" ")[1]) - 1;
-                    tasks[index].markAsDone();
+                    tasks.get(index).markAsDone();
                     System.out.println(" Nice! I've marked this task as done:");
-                    System.out.println("   " + tasks[index]);
+                    System.out.println("   " + tasks.get(index));
                 } else if (command.startsWith("unmark")) {
                     int index = Integer.parseInt(command.split(" ")[1]) - 1;
-                    tasks[index].markAsUndone();
+                    tasks.get(index).markAsUndone();
                     System.out.println(" OK, I've marked this task as not done yet:");
-                    System.out.println("   " + tasks[index]);
+                    System.out.println("   " + tasks.get(index));
+                } else if (command.startsWith("delete")) {
+                    int index = Integer.parseInt(command.split(" ")[1]) - 1;
+                    Task removed = tasks.remove(index);
+                    System.out.println(" Noted. I've removed this task:");
+                    System.out.println("   " + removed);
+                    System.out.println(" Now you have " + tasks.size() + " tasks in the list.");
                 } else if (command.startsWith("todo")) {
                     if (command.length() <= 5) {
                         throw new KryptoException("OOPS!!! The description of a todo cannot be empty.");
                     }
                     String description = command.substring(5);
-                    tasks[count] = new Todo(description);
-                    count++;
+                    tasks.add(new Todo(description));
                     System.out.println(" Got it. I've added this task:");
-                    System.out.println("   " + tasks[count - 1]);
-                    System.out.println(" Now you have " + count + " tasks in the list.");
+                    System.out.println("   " + tasks.get(tasks.size() - 1));
+                    System.out.println(" Now you have " + tasks.size() + " tasks in the list.");
                 } else if (command.startsWith("deadline")) {
                     if (!command.contains(" /by ")) {
                         throw new KryptoException("OOPS!!! Deadline must have a /by date.");
                     }
                     String[] parts = command.substring(9).split(" /by ");
-                    tasks[count] = new Deadline(parts[0], parts[1]);
-                    count++;
+                    tasks.add(new Deadline(parts[0], parts[1]));
                     System.out.println(" Got it. I've added this task:");
-                    System.out.println("   " + tasks[count - 1]);
-                    System.out.println(" Now you have " + count + " tasks in the list.");
+                    System.out.println("   " + tasks.get(tasks.size() - 1));
+                    System.out.println(" Now you have " + tasks.size() + " tasks in the list.");
                 } else if (command.startsWith("event")) {
                     if (!command.contains(" /from ") || !command.contains(" /to ")) {
                         throw new KryptoException("OOPS!!! Event must have /from and /to.");
                     }
                     String[] parts = command.substring(6).split(" /from ");
                     String[] times = parts[1].split(" /to ");
-                    tasks[count] = new Event(parts[0], times[0], times[1]);
-                    count++;
+                    tasks.add(new Event(parts[0], times[0], times[1]));
                     System.out.println(" Got it. I've added this task:");
-                    System.out.println("   " + tasks[count - 1]);
-                    System.out.println(" Now you have " + count + " tasks in the list.");
+                    System.out.println("   " + tasks.get(tasks.size() - 1));
+                    System.out.println(" Now you have " + tasks.size() + " tasks in the list.");
                 } else {
                     throw new KryptoException("OOPS!!! I'm sorry, but I don't know what that means :-(");
                 }
             } catch (KryptoException e) {
                 System.out.println(" " + e.getMessage());
+            } catch (IndexOutOfBoundsException e) {
+                 System.out.println(" OOPS!!! That task number doesn't exist.");
             }
 
             System.out.println("____________________________________________________________");
@@ -90,19 +95,13 @@ public class Krypto {
 }
 
 class KryptoException extends Exception {
-    public KryptoException(String message) {
-        super(message);
-    }
+    public KryptoException(String message) { super(message); }
 }
 
 class Task {
     protected String description;
     protected boolean isDone;
-
-    public Task(String description) {
-        this.description = description;
-        this.isDone = false;
-    }
+    public Task(String description) { this.description = description; this.isDone = false; }
     public String getStatusIcon() { return (isDone ? "X" : " "); }
     public void markAsDone() { this.isDone = true; }
     public void markAsUndone() { this.isDone = false; }
