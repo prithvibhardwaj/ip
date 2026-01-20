@@ -13,33 +13,38 @@ public class Krypto {
 
         System.out.println("Hello from\n" + logo);
         System.out.println("____________________________________________________________");
-        System.out.println(" Hello! I'm Krypto\n What can I do for you?");
+        System.out.println(" Hello! I'm Krypto");
+        System.out.println(" What can I do for you?");
         System.out.println("____________________________________________________________");
 
         Scanner scanner = new Scanner(System.in);
-        String command = scanner.nextLine();
-        // Inside main, before the while loop:
-        String[] tasks = new String[100];
+        Task[] tasks = new Task[100];
         int count = 0;
 
-        // Inside the while loop, replace the echo logic with:
-        if (command.equals("list")) {
-            System.out.println("____________________________________________________________");
-            System.out.println(" Here are the tasks in your list:");
-            for (int i = 0; i < count; i++) {
-                System.out.println(" " + (i + 1) + ". " + tasks[i]);
-            }
-            System.out.println("____________________________________________________________");
-        } else {
-            tasks[count] = command;
-            count++;
-            System.out.println("____________________________________________________________");
-            System.out.println(" added: " + command);
-            System.out.println("____________________________________________________________");
-        }
+        String command = scanner.nextLine();
+
         while (!command.equals("bye")) {
             System.out.println("____________________________________________________________");
-            System.out.println(" " + command);
+            if (command.equals("list")) {
+                System.out.println(" Here are the tasks in your list:");
+                for (int i = 0; i < count; i++) {
+                    System.out.println(" " + (i + 1) + "." + tasks[i]);
+                }
+            } else if (command.startsWith("mark")) {
+                int index = Integer.parseInt(command.split(" ")[1]) - 1;
+                tasks[index].markAsDone();
+                System.out.println(" Nice! I've marked this task as done:");
+                System.out.println("   " + tasks[index]);
+            } else if (command.startsWith("unmark")) {
+                int index = Integer.parseInt(command.split(" ")[1]) - 1;
+                tasks[index].markAsUndone();
+                System.out.println(" OK, I've marked this task as not done yet:");
+                System.out.println("   " + tasks[index]);
+            } else {
+                tasks[count] = new Task(command);
+                count++;
+                System.out.println(" added: " + command);
+            }
             System.out.println("____________________________________________________________");
             command = scanner.nextLine();
         }
@@ -47,5 +52,32 @@ public class Krypto {
         System.out.println("____________________________________________________________");
         System.out.println(" Bye. Hope to see you again soon!");
         System.out.println("____________________________________________________________");
+    }
+}
+
+class Task {
+    protected String description;
+    protected boolean isDone;
+
+    public Task(String description) {
+        this.description = description;
+        this.isDone = false;
+    }
+
+    public String getStatusIcon() {
+        return (isDone ? "X" : " "); // mark done task with X
+    }
+
+    public void markAsDone() {
+        this.isDone = true;
+    }
+
+    public void markAsUndone() {
+        this.isDone = false;
+    }
+
+    @Override
+    public String toString() {
+        return "[" + getStatusIcon() + "] " + description;
     }
 }
