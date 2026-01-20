@@ -18,7 +18,25 @@ public class Krypto {
 
         Scanner scanner = new Scanner(System.in);
         String command = scanner.nextLine();
+        // Inside main, before the while loop:
+        String[] tasks = new String[100];
+        int count = 0;
 
+        // Inside the while loop, replace the echo logic with:
+        if (command.equals("list")) {
+            System.out.println("____________________________________________________________");
+            System.out.println(" Here are the tasks in your list:");
+            for (int i = 0; i < count; i++) {
+                System.out.println(" " + (i + 1) + ". " + tasks[i]);
+            }
+            System.out.println("____________________________________________________________");
+        } else {
+            tasks[count] = command;
+            count++;
+            System.out.println("____________________________________________________________");
+            System.out.println(" added: " + command);
+            System.out.println("____________________________________________________________");
+        }
         while (!command.equals("bye")) {
             System.out.println("____________________________________________________________");
             System.out.println(" " + command);
