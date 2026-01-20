@@ -2,6 +2,11 @@ import java.util.Scanner;
 import java.util.ArrayList;
 
 public class Krypto {
+    
+    enum Command {
+        BYE, LIST, MARK, UNMARK, DELETE, TODO, DEADLINE, EVENT
+    }
+
     public static void main(String[] args) {
         String logo = " _  __                  _       \n" +
                       "| |/ /                 | |      \n" +
@@ -21,62 +26,82 @@ public class Krypto {
         Scanner scanner = new Scanner(System.in);
         ArrayList<Task> tasks = new ArrayList<>();
 
-        String command = scanner.nextLine();
+        String input = scanner.nextLine();
 
-        while (!command.equals("bye")) {
+        while (true) {
             System.out.println("____________________________________________________________");
+            String[] words = input.split(" ");
+            String commandWord = words[0];
+
             try {
-                if (command.equals("list")) {
-                    System.out.println(" Here are the tasks in your list:");
-                    for (int i = 0; i < tasks.size(); i++) {
-                        System.out.println(" " + (i + 1) + "." + tasks.get(i));
-                    }
-                } else if (command.startsWith("mark")) {
-                    int index = Integer.parseInt(command.split(" ")[1]) - 1;
-                    tasks.get(index).markAsDone();
-                    System.out.println(" Nice! I've marked this task as done:");
-                    System.out.println("   " + tasks.get(index));
-                } else if (command.startsWith("unmark")) {
-                    int index = Integer.parseInt(command.split(" ")[1]) - 1;
-                    tasks.get(index).markAsUndone();
-                    System.out.println(" OK, I've marked this task as not done yet:");
-                    System.out.println("   " + tasks.get(index));
-                } else if (command.startsWith("delete")) {
-                    int index = Integer.parseInt(command.split(" ")[1]) - 1;
-                    Task removed = tasks.remove(index);
-                    System.out.println(" Noted. I've removed this task:");
-                    System.out.println("   " + removed);
-                    System.out.println(" Now you have " + tasks.size() + " tasks in the list.");
-                } else if (command.startsWith("todo")) {
-                    if (command.length() <= 5) {
-                        throw new KryptoException("OOPS!!! The description of a todo cannot be empty.");
-                    }
-                    String description = command.substring(5);
-                    tasks.add(new Todo(description));
-                    System.out.println(" Got it. I've added this task:");
-                    System.out.println("   " + tasks.get(tasks.size() - 1));
-                    System.out.println(" Now you have " + tasks.size() + " tasks in the list.");
-                } else if (command.startsWith("deadline")) {
-                    if (!command.contains(" /by ")) {
-                        throw new KryptoException("OOPS!!! Deadline must have a /by date.");
-                    }
-                    String[] parts = command.substring(9).split(" /by ");
-                    tasks.add(new Deadline(parts[0], parts[1]));
-                    System.out.println(" Got it. I've added this task:");
-                    System.out.println("   " + tasks.get(tasks.size() - 1));
-                    System.out.println(" Now you have " + tasks.size() + " tasks in the list.");
-                } else if (command.startsWith("event")) {
-                    if (!command.contains(" /from ") || !command.contains(" /to ")) {
-                        throw new KryptoException("OOPS!!! Event must have /from and /to.");
-                    }
-                    String[] parts = command.substring(6).split(" /from ");
-                    String[] times = parts[1].split(" /to ");
-                    tasks.add(new Event(parts[0], times[0], times[1]));
-                    System.out.println(" Got it. I've added this task:");
-                    System.out.println("   " + tasks.get(tasks.size() - 1));
-                    System.out.println(" Now you have " + tasks.size() + " tasks in the list.");
-                } else {
+                Command cmd;
+                try {
+                    cmd = Command.valueOf(commandWord.toUpperCase());
+                } catch (IllegalArgumentException e) {
                     throw new KryptoException("OOPS!!! I'm sorry, but I don't know what that means :-(");
+                }
+
+                if (cmd == Command.BYE) {
+                    break;
+                }
+
+                switch (cmd) {
+                    case LIST:
+                        System.out.println(" Here are the tasks in your list:");
+                        for (int i = 0; i < tasks.size(); i++) {
+                            System.out.println(" " + (i + 1) + "." + tasks.get(i));
+                        }
+                        break;
+
+                    case MARK:
+                        int markIndex = Integer.parseInt(words[1]) - 1;
+                        tasks.get(markIndex).markAsDone();
+                        System.out.println(" Nice! I've marked this task as done:");
+                        System.out.println("   " + tasks.get(markIndex));
+                        break;
+
+                    case UNMARK:
+                        int unmarkIndex = Integer.parseInt(words[1]) - 1;
+                        tasks.get(unmarkIndex).markAsUndone();
+                        System.out.println(" OK, I've marked this task as not done yet:");
+                        System.out.println("   " + tasks.get(unmarkIndex));
+                        break;
+
+                    case DELETE:
+                        int delIndex = Integer.parseInt(words[1]) - 1;
+                        Task removed = tasks.remove(delIndex);
+                        System.out.println(" Noted. I've removed this task:");
+                        System.out.println("   " + removed);
+                        System.out.println(" Now you have " + tasks.size() + " tasks in the list.");
+                        break;
+
+                    case TODO:
+                        if (input.trim().length() <= 4) {
+                            throw new KryptoException("OOPS!!! The description of a todo cannot be empty.");
+                        }
+                        String todoDesc = input.substring(5);
+                        tasks.add(new Todo(todoDesc));
+                        printAdded(tasks);
+                        break;
+
+                    case DEADLINE:
+                        if (!input.contains(" /by ")) {
+                            throw new KryptoException("OOPS!!! Deadline must have a /by date.");
+                        }
+                        String[] dParts = input.substring(9).split(" /by ");
+                        tasks.add(new Deadline(dParts[0], dParts[1]));
+                        printAdded(tasks);
+                        break;
+
+                    case EVENT:
+                        if (!input.contains(" /from ") || !input.contains(" /to ")) {
+                            throw new KryptoException("OOPS!!! Event must have /from and /to.");
+                        }
+                        String[] eParts = input.substring(6).split(" /from ");
+                        String[] eTimes = eParts[1].split(" /to ");
+                        tasks.add(new Event(eParts[0], eTimes[0], eTimes[1]));
+                        printAdded(tasks);
+                        break;
                 }
             } catch (KryptoException e) {
                 System.out.println(" " + e.getMessage());
@@ -85,12 +110,18 @@ public class Krypto {
             }
 
             System.out.println("____________________________________________________________");
-            command = scanner.nextLine();
+            input = scanner.nextLine();
         }
 
         System.out.println("____________________________________________________________");
         System.out.println(" Bye. Hope to see you again soon!");
         System.out.println("____________________________________________________________");
+    }
+
+    private static void printAdded(ArrayList<Task> tasks) {
+        System.out.println(" Got it. I've added this task:");
+        System.out.println("   " + tasks.get(tasks.size() - 1));
+        System.out.println(" Now you have " + tasks.size() + " tasks in the list.");
     }
 }
 
