@@ -18,7 +18,7 @@ test {
 }
 
 application {
-    mainClass = 'duke.Krypto' // We will fix the package name in the next step
+    mainClass = 'krypto.Krypto' // CHANGED FROM duke.Krypto TO krypto.Krypto
 }
 
 checkstyle {
