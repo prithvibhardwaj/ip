@@ -1,6 +1,8 @@
 import java.util.Scanner;
 import java.util.ArrayList;
 
+package krypto;
+
 public class Krypto {
     
     enum Command {
