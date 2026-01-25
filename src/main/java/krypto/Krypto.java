@@ -1,5 +1,8 @@
 import java.util.Scanner;
 import java.util.ArrayList;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 
 package krypto;
 
@@ -91,19 +94,29 @@ public class Krypto {
                             throw new KryptoException("OOPS!!! Deadline must have a /by date.");
                         }
                         String[] dParts = input.substring(9).split(" /by ");
+                        try {
+                            tasks.add(new Deadline(dParts[0], dParts[1]));
+                            printAdded(tasks);
+                        } catch (DateTimeParseException e) {
+                            System.out.println(" OOPS!!! Date format must be yyyy-mm-dd (e.g., 2019-10-15).");
+                        }
                         tasks.add(new Deadline(dParts[0], dParts[1]));
                         printAdded(tasks);
                         break;
 
                     case EVENT:
                         if (!input.contains(" /from ") || !input.contains(" /to ")) {
-                            throw new KryptoException("OOPS!!! Event must have /from and /to.");
+                        throw new KryptoException("OOPS!!! Event must have /from and /to.");
                         }
                         String[] eParts = input.substring(6).split(" /from ");
                         String[] eTimes = eParts[1].split(" /to ");
+
+                        try {
                         tasks.add(new Event(eParts[0], eTimes[0], eTimes[1]));
                         printAdded(tasks);
-                        break;
+                        } catch (DateTimeParseException e) {
+                        System.out.println(" OOPS!!! Date format must be yyyy-mm-dd (e.g., 2019-10-15).");
+                        }
                 }
             } catch (KryptoException e) {
                 System.out.println(" " + e.getMessage());
@@ -149,16 +162,33 @@ class Todo extends Task {
 }
 
 class Deadline extends Task {
-    protected String by;
-    public Deadline(String description, String by) { super(description); this.by = by; }
+    protected LocalDate by;
+
+    public Deadline(String description, String by) {
+        super(description);
+        this.by = LocalDate.parse(by);
+    }
+
     @Override
-    public String toString() { return "[D]" + super.toString() + " (by: " + by + ")"; }
+    public String toString() {
+        return "[D]" + super.toString() + " (by: " + by.format(DateTimeFormatter.ofPattern("MMM d yyyy")) + ")";
+    }
 }
 
 class Event extends Task {
-    protected String from;
-    protected String to;
-    public Event(String description, String from, String to) { super(description); this.from = from; this.to = to; }
+    protected LocalDate from;
+    protected LocalDate to;
+
+    public Event(String description, String from, String to) {
+        super(description);
+        this.from = LocalDate.parse(from);
+        this.to = LocalDate.parse(to);
+    }
+
     @Override
-    public String toString() { return "[E]" + super.toString() + " (from: " + from + " to: " + to + ")"; }
+    public String toString() {
+        return "[E]" + super.toString() +
+               " (from: " + from.format(DateTimeFormatter.ofPattern("MMM d yyyy")) +
+               " to: " + to.format(DateTimeFormatter.ofPattern("MMM d yyyy")) + ")";
+    }
 }
