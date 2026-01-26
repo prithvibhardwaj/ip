@@ -1,7 +1,7 @@
 plugins {
     id 'java'
     id 'application'
-    // id 'checkstyle'
+    id 'checkstyle'
 }
 
 repositories {
@@ -27,6 +27,6 @@ run {
     standardInput = System.in
 }
 
-/* checkstyle {
+checkstyle {
     toolVersion = '10.12.4'
-}*/ 
+}
