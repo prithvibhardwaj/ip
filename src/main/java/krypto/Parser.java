@@ -4,8 +4,6 @@ import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
 
 public class Parser {
-    
-    // Returns true if the program should exit
     public static boolean parse(String fullCommand, TaskList taskList, Ui ui, Storage storage) {
         String[] words = fullCommand.split(" ");
         String commandWord = words[0];
@@ -13,7 +11,7 @@ public class Parser {
         try {
             switch (commandWord) {
             case "bye":
-                return true; // Exit the loop
+                return true;
                 
             case "list":
                 taskList.list();
@@ -39,7 +37,7 @@ public class Parser {
 
             case "todo":
                 if (fullCommand.trim().length() <= 4) {
-                    throw new KryptoException("OOPS!!! The description of a todo cannot be empty.");
+                    throw new KryptoException("The description of a todo cannot be empty.");
                 }
                 String todoDesc = fullCommand.substring(5);
                 taskList.add(new Todo(todoDesc));
@@ -48,20 +46,20 @@ public class Parser {
 
             case "deadline":
                 if (!fullCommand.contains(" /by ")) {
-                    throw new KryptoException("OOPS!!! Deadline must have a /by date.");
+                    throw new KryptoException("Deadline must have a /by date.");
                 }
                 String[] dParts = fullCommand.substring(9).split(" /by ");
                 try {
-                    taskList.add(new Deadline(dParts[0], dParts[1])); // Parsing handled in Deadline class
+                    taskList.add(new Deadline(dParts[0], dParts[1]));
                     storage.save(taskList.getAllTasks());
                 } catch (DateTimeParseException e) {
-                    ui.showError("OOPS!!! Date format must be yyyy-mm-dd.");
+                    ui.showError("Date format must be yyyy-mm-dd.");
                 }
                 break;
 
             case "event":
                 if (!fullCommand.contains(" /from ") || !fullCommand.contains(" /to ")) {
-                    throw new KryptoException("OOPS!!! Event must have /from and /to.");
+                    throw new KryptoException("Event must have /from and /to.");
                 }
                 String[] eParts = fullCommand.substring(6).split(" /from ");
                 String[] eTimes = eParts[1].split(" /to ");
@@ -69,17 +67,25 @@ public class Parser {
                     taskList.add(new Event(eParts[0], eTimes[0], eTimes[1]));
                     storage.save(taskList.getAllTasks());
                 } catch (DateTimeParseException e) {
-                    ui.showError("OOPS!!! Date format must be yyyy-mm-dd.");
+                    ui.showError("Date format must be yyyy-mm-dd.");
                 }
                 break;
 
+            case "find":
+                if (words.length < 2) {
+                    throw new KryptoException("The search keyword cannot be empty.");
+                }
+                String keyword = fullCommand.substring(5).trim();
+                taskList.find(keyword);
+                break;
+
             default:
-                throw new KryptoException("OOPS!!! I'm sorry, but I don't know what that means :-(");
+                throw new KryptoException("I'm sorry, but I don't know what that means");
             }
         } catch (KryptoException e) {
             ui.showError(e.getMessage());
         } catch (IndexOutOfBoundsException | NumberFormatException e) {
-            ui.showError("OOPS!!! Invalid task number.");
+            ui.showError("Invalid task number.");
         }
         return false; // Continue the loop
     }

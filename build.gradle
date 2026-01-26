@@ -23,6 +23,10 @@ application {
     mainClass = 'krypto.Krypto' // CHANGED FROM duke.Krypto TO krypto.Krypto
 }
 
+run {
+    standardInput = System.in
+}
+
 /* checkstyle {
     toolVersion = '10.12.4'
 }*/ 
