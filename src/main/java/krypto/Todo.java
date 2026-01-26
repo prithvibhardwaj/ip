@@ -1,3 +1,6 @@
+/**
+ * Represents a task without any date/time attached to it.
+ */
 package krypto;
 
 public class Todo extends Task {

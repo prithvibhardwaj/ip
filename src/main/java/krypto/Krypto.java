@@ -1,3 +1,8 @@
+/**
+ * The main entry point of the Krypto application.
+ * Initializes the application components (Ui, Storage, TaskList) and runs the main command loop.
+ */
+
 package krypto;
 
 public class Krypto {
@@ -16,6 +21,11 @@ public class Krypto {
         }
     }
 
+    /**
+     * Runs the main program loop.
+     * Shows the welcome message and continuously processes user commands
+     * until the "bye" command is issued.
+     */
     public void run() {
         ui.showWelcome();
         boolean isExit = false;

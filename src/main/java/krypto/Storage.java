@@ -1,3 +1,8 @@
+/**
+ * Handles the loading and saving of task data to the hard disk.
+ * It manages the read/write operations to the specified file path.
+ */
+
 package krypto;
 
 import java.io.File;
@@ -13,6 +18,13 @@ public class Storage {
         this.filePath = filePath;
     }
 
+    /**
+     * Loads tasks from the file specified in the constructor.
+     * If the file does not exist, it returns an empty list.
+     *
+     * @return An ArrayList of Task objects loaded from the file.
+     * @throws KryptoException If there is an error reading the file.
+     */
     public ArrayList<Task> load() throws KryptoException {
         ArrayList<Task> tasks = new ArrayList<>();
         File file = new File(filePath);
@@ -35,6 +47,12 @@ public class Storage {
         return tasks;
     }
 
+    /**
+     * Saves the current list of tasks to the file.
+     * If the directory or file does not exist, it attempts to create them.
+     *
+     * @param tasks The list of tasks to write to the file.
+     */
     public void save(ArrayList<Task> tasks) {
         try {
             File file = new File(filePath);

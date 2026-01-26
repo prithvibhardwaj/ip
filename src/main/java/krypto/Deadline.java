@@ -1,3 +1,6 @@
+/**
+ * Represents a task that needs to be done before a specific date.
+ */
 package krypto;
 
 import java.time.LocalDate;

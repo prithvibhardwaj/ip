@@ -1,3 +1,8 @@
+/**
+ * Represents the list of tasks.
+ * Contains operations to add, delete, list, and modify tasks (e.g., marking them as done).
+ */
+
 package krypto;
 
 import java.util.ArrayList;
@@ -46,14 +51,12 @@ public class TaskList {
         }
     }
 
-    public int size() {
-        return tasks.size();
-    }
-    
-    public ArrayList<Task> getAllTasks() {
-        return tasks;
-    }
-
+    /**
+     * Searches for tasks that contain the specified keyword in their description.
+     * Prints the matching tasks to the UI.
+     *
+     * @param keyword The string to search for within task descriptions.
+     */
     public void find(String keyword) {
         System.out.println(" Here are the matching tasks in your list:");
         int count = 0;
@@ -69,4 +72,12 @@ public class TaskList {
             System.out.println("No matching tasks found.");
         }
     }
+
+    public int size() {
+        return tasks.size();
+    }
+    
+    public ArrayList<Task> getAllTasks() {
+        return tasks;
+    }   
 }

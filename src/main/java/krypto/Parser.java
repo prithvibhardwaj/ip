@@ -1,9 +1,23 @@
+/**
+ * Interprets user commands and executes the corresponding actions.
+ * Acts as the bridge between the user's input and the application's logic.
+ */
+
 package krypto;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
 
 public class Parser {
+    /**
+     * Parses the full user command and performs the appropriate action on the TaskList.
+     *
+     * @param fullCommand The full string command entered by the user.
+     * @param taskList    The current list of tasks to manipulate.
+     * @param ui          The Ui instance to display feedback to the user.
+     * @param storage     The Storage instance to save changes immediately.
+     * @return true if the command is "bye" (indicating the program should exit), false otherwise.
+     */
     public static boolean parse(String fullCommand, TaskList taskList, Ui ui, Storage storage) {
         String[] words = fullCommand.split(" ");
         String commandWord = words[0];

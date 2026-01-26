@@ -1,3 +1,8 @@
+/**
+ * Handles all interactions with the user.
+ * Responsible for reading user input and printing messages to the console.
+ */
+
 package krypto;
 
 import java.util.Scanner;
@@ -9,6 +14,11 @@ public class Ui {
         this.scanner = new Scanner(System.in);
     }
 
+    /**
+     * Reads a single line of input from the user.
+     *
+     * @return The command string entered by the user.
+     */
     public String readCommand() {
         return scanner.nextLine();
     }

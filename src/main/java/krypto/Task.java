@@ -1,3 +1,8 @@
+/**
+ * Represents a generic task.
+ * This is the parent class for specific task types like Todo, Deadline, and Event.
+ */
+
 package krypto;
 
 public class Task {
@@ -13,6 +18,9 @@ public class Task {
         return (isDone ? "X" : " "); // mark done task with X
     }
 
+    /**
+     * Marks the task as completed.
+     */
     public void markAsDone() {
         this.isDone = true;
     }
