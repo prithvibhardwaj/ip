@@ -2,10 +2,20 @@ plugins {
     id 'java'
     id 'application'
     id 'checkstyle'
+    id 'org.openjfx.javafxplugin' version '0.1.0'
 }
 
 repositories {
     mavenCentral()
+}
+
+javafx {
+    version = "17"
+    modules = [ 'javafx.controls', 'javafx.fxml' ]
+}
+
+application {
+    mainClass = "krypto.Launcher"
 }
 
 dependencies {
@@ -19,14 +29,10 @@ test {
     useJUnitPlatform()
 }
 
-application {
-    mainClass = 'krypto.Krypto' // CHANGED FROM duke.Krypto TO krypto.Krypto
-}
-
 run {
     standardInput = System.in
 }
 
 checkstyle {
-    toolVersion = '10.12.4'
+    toolVersion = '10.2'
 }

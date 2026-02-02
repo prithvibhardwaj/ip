@@ -5,14 +5,17 @@
 
 package krypto;
 
+import krypto.commands.Command;
+
 public class Krypto {
+
     private Storage storage;
     private TaskList tasks;
     private Ui ui;
 
-    public Krypto(String filePath) {
+    public Krypto() {
         ui = new Ui();
-        storage = new Storage(filePath);
+        storage = new Storage("data/krypto.txt");
         try {
             tasks = new TaskList(storage.load());
         } catch (KryptoException e) {
@@ -22,23 +25,21 @@ public class Krypto {
     }
 
     /**
-     * Runs the main program loop.
-     * Shows the welcome message and continuously processes user commands
-     * until the "bye" command is issued.
+     * Generates a response for the user's chat message.
      */
-    public void run() {
-        ui.showWelcome();
-        boolean isExit = false;
-        while (!isExit) {
-            String fullCommand = ui.readCommand();
-            ui.showLine();
-            // Parser processes the command and returns true if it's time to exit
-            isExit = Parser.parse(fullCommand, tasks, ui, storage);
-            ui.showLine();
+    public String getResponse(String input) {
+        try {
+            Command c = Parser.parse(input);
+            return c.execute(tasks, ui, storage);
+        } catch (KryptoException e) {
+            return ui.showError(e.getMessage());
         }
     }
 
-    public static void main(String[] args) {
-        new Krypto("data/tasks.txt").run();
+    /**
+     * Returns the welcome message to be displayed at startup.
+     */
+    public String getWelcomeMessage() {
+        return ui.showWelcome();
     }
 }

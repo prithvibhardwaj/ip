@@ -10,6 +10,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
+import krypto.tasks.Task;
 
 public class Storage {
     private String filePath;
