@@ -19,6 +19,11 @@ public class Ui {
         return "Hello! I'm Krypto.\nWhat can I do for you today?";
     }
 
+    public void showWelcome(String... messages) {
+        for (String m : messages) {
+            System.out.println(m);
+        }
+    }
     public String showGoodbye() {
         return "Bye. Hope to see you again soon!";
     }
