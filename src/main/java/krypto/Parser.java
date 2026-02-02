@@ -5,102 +5,94 @@
 
 package krypto;
 
+import krypto.commands.*;
+import krypto.tasks.Deadline;
+import krypto.tasks.Event;
+import krypto.tasks.Todo;
+
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
 
 public class Parser {
+
     /**
-     * Parses the full user command and performs the appropriate action on the TaskList.
-     *
-     * @param fullCommand The full string command entered by the user.
-     * @param taskList    The current list of tasks to manipulate.
-     * @param ui          The Ui instance to display feedback to the user.
-     * @param storage     The Storage instance to save changes immediately.
-     * @return true if the command is "bye" (indicating the program should exit), false otherwise.
+     * Parses the full command string and returns the appropriate Command object.
      */
-    public static boolean parse(String fullCommand, TaskList taskList, Ui ui, Storage storage) {
-        String[] words = fullCommand.split(" ");
-        String commandWord = words[0];
+    public static Command parse(String fullCommand) throws KryptoException {
+        String[] parts = fullCommand.split(" ", 2);
+        String commandWord = parts[0];
+        String arguments = parts.length > 1 ? parts[1] : "";
 
-        try {
-            switch (commandWord) {
-            case "bye":
-                return true;
-                
-            case "list":
-                taskList.list();
-                break;
+        switch (commandWord) {
+        case "bye":
+            return new ExitCommand();
 
-            case "mark":
-                int markIndex = Integer.parseInt(words[1]) - 1;
-                taskList.mark(markIndex);
-                storage.save(taskList.getAllTasks());
-                break;
+        case "list":
+            return new ListCommand();
 
-            case "unmark":
-                int unmarkIndex = Integer.parseInt(words[1]) - 1;
-                taskList.unmark(unmarkIndex);
-                storage.save(taskList.getAllTasks());
-                break;
+        case "mark":
+            return new MarkCommand(parseIndex(arguments), true);
 
-            case "delete":
-                int delIndex = Integer.parseInt(words[1]) - 1;
-                taskList.delete(delIndex);
-                storage.save(taskList.getAllTasks());
-                break;
+        case "unmark":
+            return new MarkCommand(parseIndex(arguments), false);
 
-            case "todo":
-                if (fullCommand.trim().length() <= 4) {
-                    throw new KryptoException("The description of a todo cannot be empty.");
-                }
-                String todoDesc = fullCommand.substring(5);
-                taskList.add(new Todo(todoDesc));
-                storage.save(taskList.getAllTasks());
-                break;
+        case "delete":
+            return new DeleteCommand(parseIndex(arguments));
 
-            case "deadline":
-                if (!fullCommand.contains(" /by ")) {
-                    throw new KryptoException("Deadline must have a /by date.");
-                }
-                String[] dParts = fullCommand.substring(9).split(" /by ");
-                try {
-                    taskList.add(new Deadline(dParts[0], dParts[1]));
-                    storage.save(taskList.getAllTasks());
-                } catch (DateTimeParseException e) {
-                    ui.showError("Date format must be yyyy-mm-dd.");
-                }
-                break;
+        case "find":
+            return new FindCommand(arguments);
 
-            case "event":
-                if (!fullCommand.contains(" /from ") || !fullCommand.contains(" /to ")) {
-                    throw new KryptoException("Event must have /from and /to.");
-                }
-                String[] eParts = fullCommand.substring(6).split(" /from ");
-                String[] eTimes = eParts[1].split(" /to ");
-                try {
-                    taskList.add(new Event(eParts[0], eTimes[0], eTimes[1]));
-                    storage.save(taskList.getAllTasks());
-                } catch (DateTimeParseException e) {
-                    ui.showError("Date format must be yyyy-mm-dd.");
-                }
-                break;
-
-            case "find":
-                if (words.length < 2) {
-                    throw new KryptoException("The search keyword cannot be empty.");
-                }
-                String keyword = fullCommand.substring(5).trim();
-                taskList.find(keyword);
-                break;
-
-            default:
-                throw new KryptoException("I'm sorry, but I don't know what that means");
+        case "todo":
+            if (arguments.isEmpty()) {
+                throw new KryptoException("The description of a todo cannot be empty.");
             }
-        } catch (KryptoException e) {
-            ui.showError(e.getMessage());
-        } catch (IndexOutOfBoundsException | NumberFormatException e) {
-            ui.showError("Invalid task number.");
+            return new AddCommand(new Todo(arguments));
+
+        case "deadline":
+            return prepareDeadline(arguments);
+
+        case "event":
+            return prepareEvent(arguments);
+
+        case "hello":
+            return new Command() {
+                public String execute(TaskList t, Ui u, Storage s) {
+                    return "Hi there! How can I help?";
+                }
+            };
+
+        default:
+            throw new KryptoException("I'm sorry, but I don't know what that means :-(");
         }
-        return false; // Continue the loop
+    }
+
+    private static int parseIndex(String args) throws KryptoException {
+        try {
+            return Integer.parseInt(args) - 1;
+        } catch (NumberFormatException e) {
+            throw new KryptoException("Invalid task number.");
+        }
+    }
+
+    private static Command prepareDeadline(String args) throws KryptoException {
+        String[] parts = args.split(" /by ");
+        if (parts.length < 2) {
+            throw new KryptoException("Invalid deadline format. Use: deadline <desc> /by <date>");
+        }
+        try {
+            LocalDate date = LocalDate.parse(parts[1]);
+            return new AddCommand(new Deadline(parts[0], date));
+        } catch (DateTimeParseException e) {
+            // Fallback for non-standard dates if you prefer, or throw error
+            return new AddCommand(new Deadline(parts[0], parts[1]));
+        }
+    }
+
+    private static Command prepareEvent(String args) throws KryptoException {
+        String[] parts = args.split(" /from | /to ");
+        if (parts.length < 3) {
+            throw new KryptoException("Invalid event format. Use: event <desc> /from <start> /to <end>");
+        }
+        return new AddCommand(new Event(parts[0], parts[1], parts[2]));
     }
 }

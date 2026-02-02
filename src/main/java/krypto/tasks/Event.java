@@ -1,7 +1,7 @@
 /**
  * Represents a task that starts at a specific time and ends at a specific time.
  */
-package krypto;
+package krypto.tasks;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;

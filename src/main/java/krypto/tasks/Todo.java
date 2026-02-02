@@ -1,7 +1,7 @@
 /**
  * Represents a task without any date/time attached to it.
  */
-package krypto;
+package krypto.tasks;
 
 public class Todo extends Task {
     public Todo(String description) {

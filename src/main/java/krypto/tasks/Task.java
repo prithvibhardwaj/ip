@@ -2,8 +2,7 @@
  * Represents a generic task.
  * This is the parent class for specific task types like Todo, Deadline, and Event.
  */
-
-package krypto;
+package krypto.tasks;
 
 public class Task {
     protected String description;
@@ -15,7 +14,7 @@ public class Task {
     }
 
     public String getStatusIcon() {
-        return (isDone ? "X" : " "); // mark done task with X
+        return (isDone ? "X" : " ");
     }
 
     /**
@@ -25,7 +24,7 @@ public class Task {
         this.isDone = true;
     }
 
-    public void markAsUndone() {
+    public void markAsNotDone() {
         this.isDone = false;
     }
 
