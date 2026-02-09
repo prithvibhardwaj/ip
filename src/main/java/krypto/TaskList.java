@@ -6,6 +6,7 @@ package krypto;
 
 import krypto.tasks.Task;
 import java.util.ArrayList;
+import java.util.stream.Collectors;
 
 /**
  * Represents the list of tasks.
@@ -72,12 +73,9 @@ public class TaskList {
      * @return An ArrayList containing only the matching tasks.
      */
     public ArrayList<Task> find(String keyword) {
-        ArrayList<Task> matches = new ArrayList<>();
-        for (Task task : tasks) {
-            if (task.toString().contains(keyword)) {
-                matches.add(task);
-            }
-        }
-        return matches;
+        // This uses a Stream to filter tasks, making the code shorter and more readable
+        return tasks.stream()
+                .filter(t -> t.getDescription().contains(keyword))
+                .collect(Collectors.toCollection(ArrayList::new));
     }
 }
