@@ -18,16 +18,17 @@ public class Parser {
         String arguments = parts.length > 1 ? parts[1] : "";
 
         switch (commandWord) {
-        case "bye": return new ExitCommand();
-        case "list": return new ListCommand();
-        case "mark": return new MarkCommand(parseIndex(arguments), true);
-        case "unmark": return new MarkCommand(parseIndex(arguments), false);
-        case "delete": return new DeleteCommand(parseIndex(arguments));
-        case "find": return new FindCommand(arguments);
-        case "todo": return prepareTodo(arguments);
-        case "deadline": return prepareDeadline(arguments);
-        case "event": return prepareEvent(arguments);
-        default: throw new KryptoException("I'm sorry, but I don't know what that means :-(");
+          case "bye": return new ExitCommand();
+          case "list": return new ListCommand();
+          case "mark": return new MarkCommand(parseIndex(arguments), true);
+          case "unmark": return new MarkCommand(parseIndex(arguments), false);
+          case "delete": return new DeleteCommand(parseIndex(arguments));
+          case "find": return new FindCommand(arguments);
+          case "todo": return prepareTodo(arguments);
+          case "deadline": return prepareDeadline(arguments);
+          case "event": return prepareEvent(arguments);
+          case "sort": return new SortCommand();
+          default: throw new KryptoException("I'm sorry, but I don't know what that means :-(");
         }
     }
 

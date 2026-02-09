@@ -4,6 +4,7 @@ import krypto.Storage;
 import krypto.TaskList;
 import krypto.Ui;
 import javafx.application.Platform;
+import krypto.tasks.Task;
 
 public class ExitCommand extends Command {
     @Override
