@@ -32,7 +32,9 @@ public class TaskList {
      * @param index The zero-based index of the task to delete.
      * @return The Task object that was removed.
      */
-    public Task delete(int index) {
+    public Task delete(int index) throws KryptoException {
+        assert index >= 0 : "Index cannot be negative";
+        validateIndex(index);
         return tasks.remove(index);
     }
 
