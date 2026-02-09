@@ -61,6 +61,9 @@ public class Parser {
                 }
             };
 
+        case "sort":
+            return new SortCommand();
+
         default:
             throw new KryptoException("I'm sorry, but I don't know what that means :-(");
         }
