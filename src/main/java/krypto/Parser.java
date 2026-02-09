@@ -5,64 +5,29 @@
 
 package krypto;
 
-import krypto.commands.*;
-import krypto.tasks.Deadline;
-import krypto.tasks.Event;
-import krypto.tasks.Todo;
-
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
+import krypto.commands.*;
+import krypto.tasks.*;
 
 public class Parser {
 
-    /**
-     * Parses the full command string and returns the appropriate Command object.
-     */
     public static Command parse(String fullCommand) throws KryptoException {
         String[] parts = fullCommand.split(" ", 2);
         String commandWord = parts[0];
         String arguments = parts.length > 1 ? parts[1] : "";
 
         switch (commandWord) {
-        case "bye":
-            return new ExitCommand();
-
-        case "list":
-            return new ListCommand();
-
-        case "mark":
-            return new MarkCommand(parseIndex(arguments), true);
-
-        case "unmark":
-            return new MarkCommand(parseIndex(arguments), false);
-
-        case "delete":
-            return new DeleteCommand(parseIndex(arguments));
-
-        case "find":
-            return new FindCommand(arguments);
-
-        case "todo":
-            if (arguments.isEmpty()) {
-                throw new KryptoException("The description of a todo cannot be empty.");
-            }
-            return new AddCommand(new Todo(arguments));
-
-        case "deadline":
-            return prepareDeadline(arguments);
-
-        case "event":
-            return prepareEvent(arguments);
-
-        case "hello":
-            return new Command() {
-                public String execute(TaskList t, Ui u, Storage s) {
-                    return "Hi there! How can I help?";
-                }
-            };
-
-        default:
-            throw new KryptoException("I'm sorry, but I don't know what that means :-(");
+        case "bye": return new ExitCommand();
+        case "list": return new ListCommand();
+        case "mark": return new MarkCommand(parseIndex(arguments), true);
+        case "unmark": return new MarkCommand(parseIndex(arguments), false);
+        case "delete": return new DeleteCommand(parseIndex(arguments));
+        case "find": return new FindCommand(arguments);
+        case "todo": return prepareTodo(arguments);
+        case "deadline": return prepareDeadline(arguments);
+        case "event": return prepareEvent(arguments);
+        default: throw new KryptoException("I'm sorry, but I don't know what that means :-(");
         }
     }
 
@@ -74,25 +39,24 @@ public class Parser {
         }
     }
 
+    private static Command prepareTodo(String args) throws KryptoException {
+        if (args.isEmpty()) throw new KryptoException("Description cannot be empty.");
+        return new AddCommand(new Todo(args));
+    }
+
     private static Command prepareDeadline(String args) throws KryptoException {
         String[] parts = args.split(" /by ");
-        if (parts.length < 2) {
-            throw new KryptoException("Invalid deadline format. Use: deadline <desc> /by <date>");
-        }
+        if (parts.length < 2) throw new KryptoException("Invalid deadline format.");
         try {
-            LocalDate date = LocalDate.parse(parts[1]);
-            return new AddCommand(new Deadline(parts[0], date));
+            return new AddCommand(new Deadline(parts[0], LocalDate.parse(parts[1])));
         } catch (DateTimeParseException e) {
-            // Fallback for non-standard dates if you prefer, or throw error
             return new AddCommand(new Deadline(parts[0], parts[1]));
         }
     }
 
     private static Command prepareEvent(String args) throws KryptoException {
         String[] parts = args.split(" /from | /to ");
-        if (parts.length < 3) {
-            throw new KryptoException("Invalid event format. Use: event <desc> /from <start> /to <end>");
-        }
+        if (parts.length < 3) throw new KryptoException("Invalid event format.");
         return new AddCommand(new Event(parts[0], parts[1], parts[2]));
     }
 }
