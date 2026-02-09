@@ -55,17 +55,13 @@ public class Storage {
      * @param tasks The list of tasks to write to the file.
      */
     public void save(ArrayList<Task> tasks) {
-        try {
-            File file = new File(filePath);
-            file.getParentFile().mkdirs(); // Create directories if needed
-            FileWriter writer = new FileWriter(file);
+        assert tasks != null : "Task list cannot be null";
+        try (FileWriter fw = new FileWriter(filePath)) {
             for (Task t : tasks) {
-                // simple save format example
-                writer.write(t.toString() + "\n"); 
+                fw.write(t.toFileFormat() + System.lineSeparator());
             }
-            writer.close();
         } catch (IOException e) {
-            System.out.println(" OOPS!!! Error saving tasks.");
+            System.out.println("Error saving file: " + e.getMessage());
         }
     }
 }
