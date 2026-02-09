@@ -24,6 +24,14 @@ public class Task {
         this.isDone = true;
     }
 
+    public String getDescription() {
+        return this.description;
+    }
+
+    public String toFileFormat() {
+        return (isDone ? "1" : "0") + " | " + description;
+    }
+
     public void markAsNotDone() {
         this.isDone = false;
     }

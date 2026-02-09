@@ -80,4 +80,10 @@ public class TaskList {
         }
         return matches;
     }
+
+    private void validateIndex(int index) throws KryptoException {
+        if (index < 0 || index >= tasks.size()) {
+            throw new KryptoException("Invalid task number.");
+        }
+    }
 }
