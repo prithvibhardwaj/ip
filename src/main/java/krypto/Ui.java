@@ -28,8 +28,12 @@ public class Ui {
         return "Bye. Hope to see you again soon!";
     }
 
-    public String showError(String message) {
-        return "OOPS!!! " + message;
+    public String showError(String... messages) {
+        StringBuilder sb = new StringBuilder("OOPS!!! ");
+        for (String m : messages) {
+            sb.append(m).append(" ");
+        }
+        return sb.toString().trim();
     }
 
     public String showLoadingError() {
