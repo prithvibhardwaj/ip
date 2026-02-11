@@ -1,12 +1,9 @@
-/**
- * Represents the list of tasks.
- * Contains operations to add, delete, list, and modify tasks (e.g., marking them as done).
- */
 package krypto;
 
-import krypto.tasks.Task;
 import java.util.ArrayList;
 import java.util.stream.Collectors;
+
+import krypto.tasks.Task;
 
 /**
  * Represents the list of tasks.
@@ -15,14 +12,27 @@ import java.util.stream.Collectors;
 public class TaskList {
     private ArrayList<Task> tasks;
 
+    /**
+     * Constructs an empty TaskList.
+     */
     public TaskList() {
         this.tasks = new ArrayList<>();
     }
 
+    /**
+     * Constructs a TaskList with an existing list of tasks.
+     *
+     * @param tasks The existing list of tasks.
+     */
     public TaskList(ArrayList<Task> tasks) {
         this.tasks = tasks;
     }
 
+    /**
+     * Adds a task to the list.
+     *
+     * @param task The task to be added.
+     */
     public void add(Task task) {
         tasks.add(task);
     }
@@ -32,6 +42,7 @@ public class TaskList {
      *
      * @param index The zero-based index of the task to delete.
      * @return The Task object that was removed.
+     * @throws KryptoException If the index is invalid.
      */
     public Task delete(int index) throws KryptoException {
         assert index >= 0 : "Index cannot be negative";
@@ -75,7 +86,6 @@ public class TaskList {
      * @return An ArrayList containing only the matching tasks.
      */
     public ArrayList<Task> find(String keyword) {
-        // This uses a Stream to filter tasks, making the code shorter and more readable
         return tasks.stream()
                 .filter(t -> t.getDescription().contains(keyword))
                 .collect(Collectors.toCollection(ArrayList::new));

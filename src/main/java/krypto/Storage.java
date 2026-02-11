@@ -1,8 +1,3 @@
-/**
- * Handles the loading and saving of task data to the hard disk.
- * It manages the read/write operations to the specified file path.
- */
-
 package krypto;
 
 import java.io.File;
@@ -10,11 +5,21 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
+
 import krypto.tasks.Task;
 
+/**
+ * Handles the loading and saving of task data to the hard disk.
+ * It manages the read/write operations to the specified file path.
+ */
 public class Storage {
     private String filePath;
 
+    /**
+     * Constructs a Storage object.
+     *
+     * @param filePath The file path where data is stored.
+     */
     public Storage(String filePath) {
         this.filePath = filePath;
     }
@@ -36,11 +41,8 @@ public class Storage {
         try (Scanner scanner = new Scanner(file)) {
             while (scanner.hasNextLine()) {
                 String line = scanner.nextLine();
-                // Simple parser for the saved file format
-                // Assumes format: T | 1 | read book
-                // You might need to adjust this matching your Level-7 save format
-                // logic here depends on how you implemented save in Level 7.
-                // This is a placeholder for your load logic.
+                // Note: Implementation of parsing logic should go here
+                // based on the specific format defined in save().
             }
         } catch (IOException e) {
             throw new KryptoException("Error reading file.");

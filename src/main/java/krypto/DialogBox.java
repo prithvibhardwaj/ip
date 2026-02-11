@@ -24,6 +24,12 @@ public class DialogBox extends HBox {
     @FXML
     private ImageView displayPicture;
 
+    /**
+     * Constructs a DialogBox with the specified text and image.
+     *
+     * @param text The text to display.
+     * @param img  The image to display.
+     */
     private DialogBox(String text, Image img) {
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(this.getClass().getResource("/view/DialogBox.fxml"));
@@ -48,14 +54,27 @@ public class DialogBox extends HBox {
         setAlignment(Pos.TOP_LEFT);
     }
 
+    /**
+     * Creates a dialog box for the user (image on the right).
+     *
+     * @param text The user's input text.
+     * @param img  The user's profile image.
+     * @return A DialogBox representing the user's input.
+     */
     public static DialogBox getUserDialog(String text, Image img) {
         return new DialogBox(text, img);
     }
 
+    /**
+     * Creates a dialog box for Krypto (image on the left).
+     *
+     * @param text The response text from Krypto.
+     * @param img  Krypto's profile image.
+     * @return A DialogBox representing Krypto's response.
+     */
     public static DialogBox getKryptoDialog(String text, Image img) {
         var db = new DialogBox(text, img);
         db.flip();
         return db;
     }
 }
-

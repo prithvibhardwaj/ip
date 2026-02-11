@@ -1,19 +1,21 @@
 package krypto;
 
-import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+
+import org.junit.jupiter.api.Test;
+
+import krypto.tasks.Todo;
 
 public class TodoTest {
     @Test
-    public void toString_validDescription_success() {
+    public void testToString() {
         Todo todo = new Todo("read book");
         assertEquals("[T][ ] read book", todo.toString());
     }
 
     @Test
-    public void markAsDone_validTodo_success() {
+    public void testToFileFormat() {
         Todo todo = new Todo("read book");
-        todo.markAsDone();
-        assertEquals("[T][X] read book", todo.toString());
+        assertEquals("T | 0 | read book", todo.toFileFormat());
     }
 }

@@ -1,7 +1,8 @@
-package krypto;  // Same package as main code
+package krypto;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import org.junit.jupiter.api.Test;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class KryptoTest {
     @Test

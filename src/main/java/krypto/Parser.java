@@ -1,34 +1,60 @@
-/**
- * Interprets user commands and executes the corresponding actions.
- * Acts as the bridge between the user's input and the application's logic.
- */
-
 package krypto;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
-import krypto.commands.*;
-import krypto.tasks.*;
 
+import krypto.commands.AddCommand;
+import krypto.commands.Command;
+import krypto.commands.DeleteCommand;
+import krypto.commands.ExitCommand;
+import krypto.commands.FindCommand;
+import krypto.commands.ListCommand;
+import krypto.commands.MarkCommand;
+import krypto.commands.SortCommand;
+import krypto.tasks.Deadline;
+import krypto.tasks.Event;
+import krypto.tasks.Todo;
+
+/**
+ * Parses user input to create specific Command objects.
+ */
 public class Parser {
 
+    /**
+     * Parses the full command string into a specific Command.
+     *
+     * @param fullCommand The user input string.
+     * @return The corresponding Command object.
+     * @throws KryptoException If the command is invalid.
+     */
     public static Command parse(String fullCommand) throws KryptoException {
         String[] parts = fullCommand.split(" ", 2);
         String commandWord = parts[0];
         String arguments = parts.length > 1 ? parts[1] : "";
 
         switch (commandWord) {
-          case "bye": return new ExitCommand();
-          case "list": return new ListCommand();
-          case "mark": return new MarkCommand(parseIndex(arguments), true);
-          case "unmark": return new MarkCommand(parseIndex(arguments), false);
-          case "delete": return new DeleteCommand(parseIndex(arguments));
-          case "find": return new FindCommand(arguments);
-          case "todo": return prepareTodo(arguments);
-          case "deadline": return prepareDeadline(arguments);
-          case "event": return prepareEvent(arguments);
-          case "sort": return new SortCommand();
-          default: throw new KryptoException("I'm sorry, but I don't know what that means :-(");
+        case "bye":
+            return new ExitCommand();
+        case "list":
+            return new ListCommand();
+        case "mark":
+            return new MarkCommand(parseIndex(arguments), true);
+        case "unmark":
+            return new MarkCommand(parseIndex(arguments), false);
+        case "delete":
+            return new DeleteCommand(parseIndex(arguments));
+        case "find":
+            return new FindCommand(arguments);
+        case "todo":
+            return prepareTodo(arguments);
+        case "deadline":
+            return prepareDeadline(arguments);
+        case "event":
+            return prepareEvent(arguments);
+        case "sort":
+            return new SortCommand();
+        default:
+            throw new KryptoException("I'm sorry, but I don't know what that means :-(");
         }
     }
 
@@ -41,13 +67,17 @@ public class Parser {
     }
 
     private static Command prepareTodo(String args) throws KryptoException {
-        if (args.isEmpty()) throw new KryptoException("Description cannot be empty.");
+        if (args.isEmpty()) {
+            throw new KryptoException("Description cannot be empty.");
+        }
         return new AddCommand(new Todo(args));
     }
 
     private static Command prepareDeadline(String args) throws KryptoException {
         String[] parts = args.split(" /by ");
-        if (parts.length < 2) throw new KryptoException("Invalid deadline format.");
+        if (parts.length < 2) {
+            throw new KryptoException("Invalid deadline format.");
+        }
         try {
             return new AddCommand(new Deadline(parts[0], LocalDate.parse(parts[1])));
         } catch (DateTimeParseException e) {
@@ -57,7 +87,9 @@ public class Parser {
 
     private static Command prepareEvent(String args) throws KryptoException {
         String[] parts = args.split(" /from | /to ");
-        if (parts.length < 3) throw new KryptoException("Invalid event format.");
+        if (parts.length < 3) {
+            throw new KryptoException("Invalid event format.");
+        }
         return new AddCommand(new Event(parts[0], parts[1], parts[2]));
     }
 }
