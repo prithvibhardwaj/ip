@@ -42,7 +42,7 @@ public class Deadline extends Task {
     public String toString() {
         return "[D]" + super.toString() + " (by: " + byDate.format(DateTimeFormatter.ofPattern("MMM d yyyy")) + ")";
     }
-    
+
     /**
      * Gets the deadline date.
      * @return The LocalDate of the deadline.

@@ -34,14 +34,11 @@ public class SortCommand extends Command {
     public String execute(TaskList tasks, Ui ui, Storage storage) throws KryptoException {
         // 1. Sort the list
         tasks.getTasks().sort(new TaskDateComparator());
-        
         // 2. Save the new order to the hard drive
         storage.save(tasks.getTasks());
-
         // 3. Build the response string manually
         StringBuilder sb = new StringBuilder();
         sb.append("I've sorted your tasks by date (earliest first):\n");
-        
         for (int i = 0; i < tasks.getTasks().size(); i++) {
             sb.append(i + 1).append(".").append(tasks.getTasks().get(i)).append("\n");
         }
@@ -102,9 +99,9 @@ public class SortCommand extends Command {
          */
         private LocalDate getDate(Task task) {
             if (task instanceof Deadline) {
-                return ((Deadline) task).getByDate(); 
+                return ((Deadline) task).getByDate();
             } else if (task instanceof Event) {
-                return ((Event) task).getFrom(); 
+                return ((Event) task).getFrom();
             }
             return null; // Todo tasks have no date
         }

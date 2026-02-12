@@ -43,7 +43,7 @@ public class Event extends Task {
     public LocalDate getFrom() {
         return this.from;
     }
-    
+
     /**
      * Returns the string representation of the Event.
      * Displays in a readable format (e.g., Oct 15 2025).

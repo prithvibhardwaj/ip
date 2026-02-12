@@ -37,8 +37,10 @@ public class MainWindow extends AnchorPane {
 
         try {
             // Load images via URL string for better compatibility
-            String userUrl = Objects.requireNonNull(this.getClass().getResource("/images/DaUser.png")).toExternalForm();
-            String kryptoUrl = Objects.requireNonNull(this.getClass().getResource("/images/DaDuke.png")).toExternalForm();
+            String userUrl = Objects.requireNonNull(this.getClass()
+                .getResource("/images/DaUser.png")).toExternalForm();
+            String kryptoUrl = Objects.requireNonNull(this.getClass()
+                .getResource("/images/DaDuke.png")).toExternalForm();
 
             userImage = new Image(userUrl);
             kryptoImage = new Image(kryptoUrl);
