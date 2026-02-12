@@ -1,5 +1,7 @@
 package krypto;
 
+import java.util.Objects;
+
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
@@ -22,16 +24,30 @@ public class MainWindow extends AnchorPane {
     private Button sendButton;
 
     private Krypto krypto;
-
-    private Image userImage = new Image(this.getClass().getResourceAsStream("/images/DaUser.png"));
-    private Image kryptoImage = new Image(this.getClass().getResourceAsStream("/images/DaDuke.png"));
+    private Image userImage;
+    private Image kryptoImage;
 
     /**
      * Initializes the scroll pane to scroll automatically to the bottom.
+     * Loads user and bot images using a robust URL method.
      */
     @FXML
     public void initialize() {
         scrollPane.vvalueProperty().bind(dialogContainer.heightProperty());
+
+        try {
+            // Load images via URL string for better compatibility
+            String userUrl = Objects.requireNonNull(this.getClass().getResource("/images/DaUser.png")).toExternalForm();
+            String kryptoUrl = Objects.requireNonNull(this.getClass().getResource("/images/DaDuke.png")).toExternalForm();
+
+            userImage = new Image(userUrl);
+            kryptoImage = new Image(kryptoUrl);
+        } catch (NullPointerException e) {
+            // Fallback if images are missing
+            System.out.println("Images not found. Chat will proceed without profile pictures.");
+            userImage = null;
+            kryptoImage = null;
+        }
     }
 
     /**

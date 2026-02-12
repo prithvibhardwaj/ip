@@ -1,0 +1,56 @@
+/* Background of the main window */
+.root {
+    -fx-background-color: #f4f4f4;
+}
+
+/* Remove the default border and background of the scroll pane */
+.scroll-pane, .scroll-pane > .viewport {
+   -fx-background-color: transparent;
+   -fx-border-width: 0;
+   -fx-background-insets: 0;
+   -fx-padding: 0;
+}
+
+/* Common style for all chat bubbles */
+.label {
+    -fx-font-size: 14px;
+    -fx-font-family: "Segoe UI", Helvetica, Arial, sans-serif;
+    /* Reduced padding inside the bubble slightly */
+    -fx-padding: 8 12 8 12;
+    -fx-background-radius: 18;
+    -fx-text-fill: white;
+    /* Optional: Add a subtle shadow for depth */
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 3, 0, 0, 1);
+}
+
+/* User's text (Blue Bubble) - Removed alignment */
+.reply-label {
+    -fx-background-color: #0084ff;
+}
+
+/* Krypto's text (Gray Bubble) - Removed alignment */
+.text-label {
+    -fx-background-color: #555555;
+}
+
+/* User Input Field */
+.text-field {
+    -fx-background-radius: 20;
+    -fx-border-radius: 20;
+    -fx-border-color: #cccccc;
+    -fx-padding: 10;
+    -fx-faint-focus-color: transparent;
+    -fx-focus-color:transparent;
+}
+
+/* Send Button */
+.button {
+    -fx-background-color: #0084ff;
+    -fx-text-fill: white;
+    -fx-background-radius: 20;
+    -fx-font-weight: bold;
+}
+
+.button:hover {
+    -fx-background-color: #0056b3;
+}

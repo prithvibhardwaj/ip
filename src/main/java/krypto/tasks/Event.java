@@ -11,33 +11,42 @@ public class Event extends Task {
     protected LocalDate to;
 
     /**
-     * Constructs an Event task.
+     * Constructs an Event task with LocalDate objects.
      *
      * @param description The description of the event.
-     * @param from        The start date (YYYY-MM-DD).
-     * @param to          The end date (YYYY-MM-DD).
+     * @param from        The start date.
+     * @param to          The end date.
      */
-    public Event(String description, String from, String to) {
+    public Event(String description, LocalDate from, LocalDate to) {
         super(description);
-        // Note: This assumes input is strictly YYYY-MM-DD.
-        // If parsing fails, the main loop handles the exception.
-        this.from = LocalDate.parse(from);
-        this.to = LocalDate.parse(to);
+        this.from = from;
+        this.to = to;
     }
 
     /**
      * Formats the Event for file storage.
+     * Uses standard ISO-8601 format (yyyy-MM-dd) for stability.
      *
      * @return A string formatted for saving to a text file.
      */
     @Override
     public String toFileFormat() {
+        // We use the default .toString() (yyyy-MM-dd) for storage to keep it standard
         return "E | " + (isDone ? "1" : "0") + " | " + description
                 + " | " + from + " | " + to;
     }
 
     /**
+     * Gets the start date of the event.
+     * @return The LocalDate the event starts.
+     */
+    public LocalDate getFrom() {
+        return this.from;
+    }
+    
+    /**
      * Returns the string representation of the Event.
+     * Displays in a readable format (e.g., Oct 15 2025).
      *
      * @return The string representation including type, status, and duration.
      */

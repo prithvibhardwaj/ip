@@ -9,7 +9,6 @@ import java.time.format.DateTimeFormatter;
 public class Deadline extends Task {
 
     protected LocalDate byDate;
-    protected String byString;
 
     /**
      * Constructs a Deadline with a LocalDate object.
@@ -20,45 +19,35 @@ public class Deadline extends Task {
     public Deadline(String description, LocalDate by) {
         super(description);
         this.byDate = by;
-        this.byString = null;
-    }
-
-    /**
-     * Constructs a Deadline with a raw string date (legacy support).
-     *
-     * @param description The description of the deadline.
-     * @param by          The date string.
-     */
-    public Deadline(String description, String by) {
-        super(description);
-        this.byString = by;
-        this.byDate = null;
     }
 
     /**
      * Formats the Deadline for file storage.
+     * Uses standard ISO-8601 format (yyyy-MM-dd) for stability.
      *
      * @return A string formatted for saving to a text file.
      */
     @Override
     public String toFileFormat() {
-        String dateSave = (byDate != null) ? byDate.toString() : byString;
-        return "D | " + (isDone ? "1" : "0") + " | " + description + " | " + dateSave;
+        return "D | " + (isDone ? "1" : "0") + " | " + description + " | " + byDate;
     }
 
     /**
      * Returns the string representation of the Deadline.
+     * Displays in a readable format (e.g., Oct 15 2025).
      *
      * @return The string representation including type, status, and due date.
      */
     @Override
     public String toString() {
-        String dateDisplay;
-        if (byDate != null) {
-            dateDisplay = byDate.format(DateTimeFormatter.ofPattern("MMM d yyyy"));
-        } else {
-            dateDisplay = byString;
-        }
-        return "[D]" + super.toString() + " (by: " + dateDisplay + ")";
+        return "[D]" + super.toString() + " (by: " + byDate.format(DateTimeFormatter.ofPattern("MMM d yyyy")) + ")";
+    }
+    
+    /**
+     * Gets the deadline date.
+     * @return The LocalDate of the deadline.
+     */
+    public LocalDate getByDate() {
+        return this.byDate;
     }
 }

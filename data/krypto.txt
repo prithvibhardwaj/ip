@@ -1,2 +1,2 @@
-[T][ ] Read a book
-[D][ ] Return book (by: Dec 1 2025)
+D | 0 | Submit iP | 2025-10-25
+T | 0 | Read a book
