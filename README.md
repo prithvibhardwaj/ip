@@ -22,7 +22,7 @@ Krypto is a task management application designed for users who prefer typing ove
 2. Download the latest `krypto.jar` from the [Releases](../../releases) page.
 3. Open a terminal or command prompt, navigate to the folder where you downloaded the file, and run:
    ```bash
-   java -jar krypto.jar
+   java -jar krypto-0.1.0.jar
    ```
 4. Type a command in the input box and press **Enter** to execute it!
 
