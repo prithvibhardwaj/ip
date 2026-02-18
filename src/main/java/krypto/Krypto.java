@@ -29,17 +29,21 @@ public class Krypto {
     }
 
     /**
-     * Generates a response for the user's chat message.
+     * Generates a response to the user's input.
+     * Parses the command, executes it, and catches any KryptoExceptions
+     * to return a friendly error message to the GUI.
      *
-     * @param input The raw input string from the user.
-     * @return The response string from the executed command.
+     * @param input The user's typed input.
+     * @return The string response from Krypto.
      */
     public String getResponse(String input) {
         try {
             Command c = Parser.parse(input);
             return c.execute(tasks, ui, storage);
         } catch (KryptoException e) {
-            return ui.showError(e.getMessage());
+            return "Oops! " + e.getMessage();
+        } catch (Exception e) {
+            return "A critical error occurred: " + e.getMessage();
         }
     }
 

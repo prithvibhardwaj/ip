@@ -1,26 +1,106 @@
-# Duke project template
+# Krypto - Your Personal Task Manager
 
-This is a project template for a greenfield Java project. It's named after the Java mascot _Duke_. Given below are instructions on how to use it.
+Krypto is a task management application designed for users who prefer typing over mouse interactions. It provides a sleek Graphical User Interface (GUI) while retaining the speed and efficiency of a Command Line Interface (CLI). 
 
-## Setting up in Intellij
+![Krypto UI](docs/Ui.png)
 
-Prerequisites: JDK 17, update Intellij to the most recent version.
+## Table of Contents
+* [Quick Start](#quick-start)
+* [Features & Usage](#features--usage)
+  * [Adding Tasks](#1-adding-tasks)
+  * [Viewing Tasks](#2-viewing-tasks)
+  * [Managing Tasks](#3-managing-tasks)
+  * [Sorting Tasks](#4-sorting-tasks)
+  * [Exiting](#5-exiting-the-app)
+* [Command Summary](#command-summary)
 
-1. Open Intellij (if you are not in the welcome screen, click `File` > `Close Project` to close the existing project first)
-1. Open the project into Intellij as follows:
-   1. Click `Open`.
-   1. Select the project directory, and click `OK`.
-   1. If there are any further prompts, accept the defaults.
-1. Configure the project to use **JDK 17** (not other versions) as explained in [here](https://www.jetbrains.com/help/idea/sdk.html#set-up-jdk).<br>
-   In the same dialog, set the **Project language level** field to the `SDK default` option.
-1. After that, locate the `src/main/java/Duke.java` file, right-click it, and choose `Run Duke.main()` (if the code editor is showing compile errors, try restarting the IDE). If the setup is correct, you should see something like the below as the output:
+---
+
+## Quick Start
+
+1. Ensure you have **Java 17** or above installed on your computer.
+2. Download the latest `krypto.jar` from the [Releases](../../releases) page.
+3. Open a terminal or command prompt, navigate to the folder where you downloaded the file, and run:
+   ```bash
+   java -jar krypto.jar
    ```
-   Hello from
-    ____        _        
-   |  _ \ _   _| | _____ 
-   | | | | | | | |/ / _ \
-   | |_| | |_| |   <  __/
-   |____/ \__,_|_|\_\___|
-   ```
+4. Type a command in the input box and press **Enter** to execute it!
 
-**Warning:** Keep the `src\main\java` folder as the root folder for Java files (i.e., don't rename those folders or move Java files to another folder outside of this folder path), as this is the default location some tools (e.g., Gradle) expect to find Java files.
+---
+
+## Features & Usage
+
+Notes about the command format:
+* Words in `<angle_brackets>` are the parameters to be supplied by the user.
+* Dates must strictly follow the `dd-mm-yyyy` format (e.g., `25-12-2026`).
+
+### 1. Adding Tasks
+Krypto supports three types of tasks: Todos, Deadlines, and Events.
+
+#### **Todo**
+Adds a simple task without any date attached.
+* **Format:** `todo <description>`
+* **Example:** `todo Read CS2103T textbook`
+
+#### **Deadline**
+Adds a task that needs to be done *by* a specific date.
+* **Format:** `deadline <description> /by <dd-mm-yyyy>`
+* **Example:** `deadline Submit iP /by 20-02-2026`
+
+#### **Event**
+Adds a task that starts and ends at specific dates.
+* **Format:** `event <description> /from <dd-mm-yyyy> /to <dd-mm-yyyy>`
+* **Example:** `event Career Fair /from 25-08-2026 /to 26-08-2026`
+
+### 2. Viewing Tasks
+
+#### **List all tasks**
+Displays a numbered list of all tasks currently in your manager.
+* **Format:** `list`
+
+#### **Find a task**
+Searches for tasks whose descriptions contain the given keyword.
+* **Format:** `find <keyword>`
+* **Example:** `find book` (Returns all tasks containing the word "book")
+
+### 3. Managing Tasks
+
+#### **Mark a task as done**
+Marks a task as completed (indicated by an `[X]`).
+* **Format:** `mark <task_number>`
+* **Example:** `mark 1` (Marks the 1st task in the list as done)
+
+#### **Unmark a task**
+Marks a task as incomplete (indicated by an `[ ]`).
+* **Format:** `unmark <task_number>`
+* **Example:** `unmark 1`
+
+#### **Delete a task**
+Removes a task from the list permanently.
+* **Format:** `delete <task_number>`
+* **Example:** `delete 2` (Removes the 2nd task in the list)
+
+### 4. Sorting Tasks
+Sorts all tasks in the list chronologically. Tasks with dates (Deadlines/Events) will appear first, sorted from earliest to latest. Tasks without dates (Todos) will appear at the bottom, sorted alphabetically.
+* **Format:** `sort`
+
+### 5. Exiting the app
+Exits the program securely.
+* **Format:** `bye`
+
+---
+
+## Command Summary
+
+| Action | Format | Example |
+|--------|--------|---------|
+| **Todo** | `todo <description>` | `todo read book` |
+| **Deadline** | `deadline <description> /by <dd-mm-yyyy>` | `deadline submit iP /by 20-02-2026` |
+| **Event** | `event <description> /from <dd-mm-yyyy> /to <dd-mm-yyyy>` | `event meeting /from 01-03-2026 /to 02-03-2026` |
+| **List** | `list` | `list` |
+| **Mark** | `mark <task_number>` | `mark 1` |
+| **Unmark** | `unmark <task_number>` | `unmark 1` |
+| **Delete** | `delete <task_number>` | `delete 1` |
+| **Find** | `find <keyword>` | `find book` |
+| **Sort** | `sort` | `sort` |
+| **Exit** | `bye` | `bye` |
