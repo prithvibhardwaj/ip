@@ -1,5 +1,6 @@
 package krypto.commands;
 
+import krypto.KryptoException;
 import krypto.Storage;
 import krypto.TaskList;
 import krypto.Ui;
@@ -19,7 +20,7 @@ public class ExitCommand extends Command {
      * @return The goodbye message.
      */
     @Override
-    public String execute(TaskList tasks, Ui ui, Storage storage) {
+    public String execute(TaskList tasks, Ui ui, Storage storage) throws KryptoException {
         return ui.showGoodbye();
     }
 

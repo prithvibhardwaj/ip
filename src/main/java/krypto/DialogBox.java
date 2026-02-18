@@ -48,21 +48,17 @@ public class DialogBox extends HBox {
         if (img != null) {
             displayPicture.setImage(img);
 
-            // 1. Force the image to fit the 35x35 box exactly
             displayPicture.setFitWidth(50.0);
             displayPicture.setFitHeight(50.0);
-            displayPicture.setPreserveRatio(false); // Crucial for non-square images
+            displayPicture.setPreserveRatio(false);
 
-            // 2. Create the circular clip (Radius = 17.5)
             Circle clip = new Circle(25, 25, 25);
             displayPicture.setClip(clip);
         } else {
-            // Fallback: Hide if missing to prevent layout issues
             displayPicture.setVisible(false);
             displayPicture.setManaged(false);
         }
 
-        // Apply CSS classes based on the type
         if (type.equals("USER")) {
             dialog.getStyleClass().add("reply-label");
         } else {

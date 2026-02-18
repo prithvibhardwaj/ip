@@ -31,7 +31,6 @@ public class Main extends Application {
             stage.setTitle("Krypto");
             stage.setResizable(false);
 
-            // Inject the logic into the controller
             fxmlLoader.<MainWindow>getController().setKrypto(krypto);
 
             stage.show();

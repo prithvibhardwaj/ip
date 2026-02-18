@@ -1,5 +1,6 @@
 package krypto.commands;
 
+import krypto.KryptoException;
 import krypto.Storage;
 import krypto.TaskList;
 import krypto.Ui;
@@ -31,7 +32,7 @@ public class AddCommand extends Command {
      * @return The response string to be displayed to the user.
      */
     @Override
-    public String execute(TaskList tasks, Ui ui, Storage storage) {
+    public String execute(TaskList tasks, Ui ui, Storage storage) throws KryptoException {
         tasks.add(task);
         storage.save(tasks.getTasks());
         return ui.showTaskAdded(task, tasks.size());

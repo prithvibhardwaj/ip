@@ -1,5 +1,7 @@
 package krypto.commands;
 
+
+import krypto.KryptoException;
 import krypto.Storage;
 import krypto.TaskList;
 import krypto.Ui;
@@ -19,7 +21,7 @@ public class ListCommand extends Command {
      * @return The formatted list of tasks.
      */
     @Override
-    public String execute(TaskList tasks, Ui ui, Storage storage) {
+    public String execute(TaskList tasks, Ui ui, Storage storage) throws KryptoException {
         return ui.showList(tasks.getTasks());
     }
 }

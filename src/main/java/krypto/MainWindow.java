@@ -39,7 +39,6 @@ public class MainWindow extends AnchorPane {
         scrollPane.vvalueProperty().bind(dialogContainer.heightProperty());
 
         try {
-            // Load images via URL string for better compatibility
             String userUrl = Objects.requireNonNull(this.getClass()
                 .getResource("/images/DaUser.png")).toExternalForm();
             String kryptoUrl = Objects.requireNonNull(this.getClass()
@@ -48,7 +47,6 @@ public class MainWindow extends AnchorPane {
             userImage = new Image(userUrl);
             kryptoImage = new Image(kryptoUrl);
         } catch (NullPointerException e) {
-            // Fallback if images are missing
             System.out.println("Images not found. Chat will proceed without profile pictures.");
             userImage = null;
             kryptoImage = null;
@@ -82,7 +80,6 @@ public class MainWindow extends AnchorPane {
         );
         userInput.clear();
 
-        // --- NEW: Auto-close logic ---
         if (input.trim().equalsIgnoreCase("bye")) {
             PauseTransition delay = new PauseTransition(Duration.seconds(1.5));
             delay.setOnFinished(event -> Platform.exit());

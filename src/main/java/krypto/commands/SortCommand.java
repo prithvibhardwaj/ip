@@ -32,11 +32,8 @@ public class SortCommand extends Command {
      */
     @Override
     public String execute(TaskList tasks, Ui ui, Storage storage) throws KryptoException {
-        // 1. Sort the list
         tasks.getTasks().sort(new TaskDateComparator());
-        // 2. Save the new order to the hard drive
         storage.save(tasks.getTasks());
-        // 3. Build the response string manually
         StringBuilder sb = new StringBuilder();
         sb.append("I've sorted your tasks by date (earliest first):\n");
         for (int i = 0; i < tasks.getTasks().size(); i++) {
@@ -66,27 +63,22 @@ public class SortCommand extends Command {
             LocalDate d1 = getDate(t1);
             LocalDate d2 = getDate(t2);
 
-            // Case 1: Both have dates -> Compare Dates
             if (d1 != null && d2 != null) {
                 int dateComparison = d1.compareTo(d2);
                 if (dateComparison != 0) {
                     return dateComparison;
                 }
-                // If dates are equal, fallback to alphabetical
                 return t1.getDescription().compareToIgnoreCase(t2.getDescription());
             }
 
-            // Case 2: t1 has date, t2 is Todo -> t1 comes first (negative)
             if (d1 != null) {
                 return -1;
             }
 
-            // Case 3: t1 is Todo, t2 has date -> t2 comes first (positive)
             if (d2 != null) {
                 return 1;
             }
 
-            // Case 4: Both are Todos (no dates) -> Compare Alphabetically
             return t1.getDescription().compareToIgnoreCase(t2.getDescription());
         }
 
@@ -103,7 +95,7 @@ public class SortCommand extends Command {
             } else if (task instanceof Event) {
                 return ((Event) task).getFrom();
             }
-            return null; // Todo tasks have no date
+            return null;
         }
     }
 }

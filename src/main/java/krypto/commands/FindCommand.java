@@ -2,6 +2,7 @@ package krypto.commands;
 
 import java.util.ArrayList;
 
+import krypto.KryptoException;
 import krypto.Storage;
 import krypto.TaskList;
 import krypto.Ui;
@@ -32,7 +33,7 @@ public class FindCommand extends Command {
      * @return The formatted list of found tasks.
      */
     @Override
-    public String execute(TaskList tasks, Ui ui, Storage storage) {
+    public String execute(TaskList tasks, Ui ui, Storage storage) throws KryptoException {
         ArrayList<Task> foundTasks = tasks.find(keyword);
         return ui.showFoundTasks(foundTasks);
     }

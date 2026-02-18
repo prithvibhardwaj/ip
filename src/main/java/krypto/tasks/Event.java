@@ -31,7 +31,6 @@ public class Event extends Task {
      */
     @Override
     public String toFileFormat() {
-        // We use the default .toString() (yyyy-MM-dd) for storage to keep it standard
         return "E | " + (isDone ? "1" : "0") + " | " + description
                 + " | " + from + " | " + to;
     }
