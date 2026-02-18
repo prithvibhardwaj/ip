@@ -2,6 +2,8 @@ package krypto;
 
 import java.util.Objects;
 
+import javafx.animation.PauseTransition;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
@@ -9,6 +11,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
+import javafx.util.Duration;
 
 /**
  * Controller for MainWindow. Provides the layout for the other controls.
@@ -67,7 +70,7 @@ public class MainWindow extends AnchorPane {
     /**
      * Handles the user input event.
      * Creates dialog boxes for user input and Krypto's reply and appends them to the dialog container.
-     * Clears the user input after processing.
+     * Clears the user input after processing. Closes the application if the command is "bye".
      */
     @FXML
     private void handleUserInput() {
@@ -78,5 +81,12 @@ public class MainWindow extends AnchorPane {
                 DialogBox.getKryptoDialog(response, kryptoImage)
         );
         userInput.clear();
+
+        // --- NEW: Auto-close logic ---
+        if (input.trim().equalsIgnoreCase("bye")) {
+            PauseTransition delay = new PauseTransition(Duration.seconds(1.5));
+            delay.setOnFinished(event -> Platform.exit());
+            delay.play();
+        }
     }
 }
