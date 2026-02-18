@@ -36,7 +36,7 @@ test {
 
 dependencies {
     String javaFxVersion = "17.0.7"
-    String[] platforms = ["win", "linux", "mac", "mac-aarch64"]
+    String[] platforms = ["win", "linux", "mac-aarch64"]
     for (String platform : platforms) {
         implementation "org.openjfx:javafx-base:${javaFxVersion}:${platform}"
         implementation "org.openjfx:javafx-controls:${javaFxVersion}:${platform}"
