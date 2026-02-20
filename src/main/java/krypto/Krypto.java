@@ -38,8 +38,8 @@ public class Krypto {
      */
     public String getResponse(String input) {
         try {
-            Command c = Parser.parse(input);
-            return c.execute(tasks, ui, storage);
+            Command command = Parser.parse(input);
+            return command.execute(tasks, ui, storage);
         } catch (KryptoException e) {
             return "Oops! " + e.getMessage();
         } catch (Exception e) {
@@ -55,4 +55,4 @@ public class Krypto {
     public String getWelcomeMessage() {
         return ui.showWelcome();
     }
-}
+} 
