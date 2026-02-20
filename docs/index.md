@@ -2,7 +2,7 @@
 
 Krypto is a task management application designed for users who prefer typing over mouse interactions. It provides a sleek Graphical User Interface (GUI) while retaining the speed and efficiency of a Command Line Interface (CLI). 
 
-![Krypto UI](docs/Ui.png)
+![Krypto UI](Ui.png)
 
 ## Table of Contents
 * [Quick Start](#quick-start)
