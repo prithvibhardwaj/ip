@@ -94,7 +94,7 @@ public class Ui {
     }
 
     /**
-     * Formats the message when a task is deleted.
+     * Formats the message when a task is deleted from the task list.
      * @param task The task that was removed.
      * @param size The new size of the list.
      * @return The formatted success message.
