@@ -13,7 +13,7 @@ public class ListCommand extends Command {
 
     /**
      * Executes the list command.
-     * Retrieves all tasks from the task list and displays them.
+     * Retrieves all tasks from the task list and displays them to the user.
      *
      * @param tasks   The list of tasks.
      * @param ui      The user interface to handle output.
