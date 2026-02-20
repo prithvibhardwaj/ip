@@ -55,4 +55,4 @@ public class Krypto {
     public String getWelcomeMessage() {
         return ui.showWelcome();
     }
-} 
+}
