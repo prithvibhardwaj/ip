@@ -17,7 +17,7 @@ public class Main extends Application {
 
     /**
      * Starts the primary stage of the application.
-     * Loads the MainWindow FXML and sets up the scene.
+     * Loads the MainWindow FXML.
      *
      * @param stage The primary stage for this application.
      */
