@@ -71,7 +71,7 @@ public class TaskList {
 
     /**
      * Returns the raw ArrayList of tasks.
-     * Used by the ListCommand to display all tasks.
+     * Used by the ListCommand to display all tasks logged.
      *
      * @return The ArrayList containing all tasks.
      */
